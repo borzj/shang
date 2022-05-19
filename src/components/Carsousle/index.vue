@@ -19,22 +19,24 @@ import Swiper from 'swiper'
 export default {
   name: "Carsousle",
   props: ['carouselList'],
-  // mounted() {
-  //   new Swiper(this.$refs.floor1Swiper, {
-  //     loop: true, // 循环模式选项
-  //
-  //     // 如果需要分页器
-  //     pagination: {
-  //       el: ".swiper-pagination",
-  //     },
-  //
-  //     // 如果需要前进后退按钮
-  //     navigation: {
-  //       nextEl: ".swiper-button-next",
-  //       prevEl: ".swiper-button-prev",
-  //     },
-  //   });
-  // },
+  mounted() {
+    // this.$nextTick(()=>{
+    //   new Swiper(this.$refs.floor1Swiper, {
+    //     loop: true, // 循环模式选项
+    //
+    //     // 如果需要分页器
+    //     pagination: {
+    //       el: ".swiper-pagination",
+    //     },
+    //
+    //     // 如果需要前进后退按钮
+    //     navigation: {
+    //       nextEl: ".swiper-button-next",
+    //       prevEl: ".swiper-button-prev",
+    //     },
+    //   });
+    // })
+  },
 
   watch: {
     carouselList: {
