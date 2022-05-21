@@ -75,12 +75,12 @@
             </div>
             <div class="cartWrap">
               <div class="controls">
-                <input autocomplete="off" class="itxt">
+                <input autocomplete="off" class="itxt" v-model="skuNumber" @change="changeSkuNum">
                 <a href="javascript:" class="plus">+</a>
                 <a href="javascript:" class="mins">-</a>
               </div>
               <div class="add">
-                <a href="javascript:">加入购物车</a>
+                <a href="javascript:" @click="addShoppingCar">加入购物车</a>
               </div>
             </div>
           </div>
@@ -343,6 +343,12 @@ export default {
     Zoom
   },
 
+  data() {
+    return {
+      skuNumber: 1
+    }
+  },
+
   mounted() {
     this.$store.dispatch('getGoodsInfo', this.$route.params.skuId)
   },
@@ -356,6 +362,25 @@ export default {
       spuSaleAttrValueList.forEach((attrValue, index) => {
         attrValue.isChecked = index === attrValueIndex ? '1' : '0';
       })
+    },
+    changeSkuNum(event) {
+      let skuNumber = Number(parseInt(event.target.value))
+      if (skuNumber < 1) {
+        skuNumber = 1
+      }
+      this.skuNumber = skuNumber
+    },
+    async addShoppingCar() {
+      const skuId = this.$route.params.skuid
+      const skuNum = this.skuNumber
+      try {
+        await this.$store.dispatch('addOrUpdateShoppingCar', {skuId, skuNum});
+        await this.$router.push({
+          name: 'add-car-success',
+        })
+      } catch (e){
+        alert(e.message)
+      }
     }
   }
 }

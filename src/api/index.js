@@ -32,3 +32,8 @@ export const reqGoodsDetail = id => requests({
     url: `/item/${id}`,
     method: 'get'
 })
+
+export const reqAddShoppingCar = (skuId, skuNum) => requests({
+    url: `/cart/addToCart/${skuId}/${skuNum}`,
+    method: 'post'
+})

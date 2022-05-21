@@ -1,4 +1,4 @@
-import {reqGoodsDetail} from '@/api'
+import {reqGoodsDetail, reqAddShoppingCar} from '@/api'
 
 const state = {
     goodInfo: {}
@@ -10,6 +10,14 @@ const actions = {
         if (res.code === 200) {
             commit('GOODS_INFO', res.data)
         }
+    },
+
+    async addOrUpdateShoppingCar({commit}, {skuId, skuNum}) {
+        const res = await reqAddShoppingCar(skuId, skuNum);
+        console.log(res)
+        // if (res.code !== 200) {
+        //     return Promise.reject(Error('添加购物车失败'))
+        // }
     }
 }
 

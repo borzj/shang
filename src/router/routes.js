@@ -3,8 +3,17 @@ import Home from "@/pages/Home";
 import Search from "@/pages/Search";
 import Login from "@/pages/Login";
 import Register from "@/pages/Register";
+import AddCartSuccess from "@/pages/AddCartSuccess";
 
 export default [
+    {
+        name: 'add-car-success',
+        path: '/add-car-success',
+        component: AddCartSuccess,
+        meta: {
+            show: true
+        }
+    },
     {
         path: '/detail/:skuId',
         component: Detail,
