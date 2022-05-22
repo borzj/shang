@@ -4,8 +4,17 @@ import Search from "@/pages/Search";
 import Login from "@/pages/Login";
 import Register from "@/pages/Register";
 import AddCartSuccess from "@/pages/AddCartSuccess";
+import ShopCart from "@/pages/ShopCart";
 
 export default [
+    {
+        name: 'shop-car',
+        path: '/shop-car',
+        component: ShopCart,
+        meta: {
+            show: true
+        }
+    },
     {
         name: 'add-car-success',
         path: '/add-car-success',
