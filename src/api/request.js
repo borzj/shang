@@ -7,6 +7,8 @@ import nprogress from 'nprogress'
 // 进度条样式
 import 'nprogress/nprogress.css'
 
+import {getUUIDToken} from "@/utiles/uuid_token";
+
 // 创建axios实例
 const requests = axios.create({
     // baseURL
@@ -21,7 +23,12 @@ requests.interceptors.request.use(config=> {
     // 进度条开始
     nprogress.start()
 
-    return config
+    const uuidToken = getUUIDToken()
+    if (uuidToken) {
+        config.headers.userTempId = uuidToken
+    }
+
+    return config;
 })
 
 // 响应拦截器, 接收到响应后执行的操作

@@ -33,7 +33,14 @@ export const reqGoodsDetail = id => requests({
     method: 'get'
 })
 
+// 添加购物车
 export const reqAddShoppingCar = (skuId, skuNum) => requests({
     url: `/cart/addToCart/${skuId}/${skuNum}`,
     method: 'post'
 })
+
+export const reqGetShopCartList = () => requests({
+    url: '/cart/cartList',
+    method: 'get'
+})
+

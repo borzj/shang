@@ -388,12 +388,11 @@ export default {
       this.skuNumber = skuNumber;
     },
     async addShoppingCar() {
-      console.log(this.skuInfo);
-      const skuId = this.$route.params.skuid;
+      const skuId = this.$route.params.skuId;
       const skuNum = this.skuNumber;
+
       try {
         await this.$store.dispatch("addOrUpdateShoppingCar", { skuId, skuNum });
-        // console.log(this.skuInfo);
         sessionStorage.setItem('SKU_INFO', JSON.stringify(this.skuInfo))
         await this.$router.push({
           name: "add-car-success",
