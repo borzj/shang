@@ -11,27 +11,28 @@
         <div class="cart-th6">操作</div>
       </div>
       <div class="cart-body">
-        <ul class="cart-list" v-for="shopCart in shopCartList" :key="shopCart.id">
+        <ul class="cart-list" v-for="(shopCart, index) in shopCartList" :key="shopCart.id">
           <li class="cart-list-con1">
-            <input type="checkbox" name="chk_list" :checked="shopCart.isChecked">
+            <input type="checkbox" name="chk_list" v-model="shopCart.isChecked" @change="checkShop(shopCart)">
           </li>
           <li class="cart-list-con2">
-            <img src="./images/goods1.png">
+            <img :src="shopCart.imgUrl">
             <div class="item-msg">{{ shopCart.skuName }}</div>
           </li>
           <li class="cart-list-con4">
             <span class="price">{{ shopCart.skuPrice }}</span>
           </li>
           <li class="cart-list-con5">
-            <a href="javascript:void(0)" class="mins">-</a>
-            <input autocomplete="off" type="text" minnum="1" class="itxt" :value="shopCart.skuNum">
-            <a href="javascript:void(0)" class="plus">+</a>
+            <a href="javascript:void(0)" class="mins" @click="changeNum(shopCart, -1)">-</a>
+            <input autocomplete="off" ref="skuNum" type="text" minnum="1" class="itxt" :value="shopCart.skuNum"
+                   @change="changeNum(shopCart, $event.target.value * 1 - shopCart.skuNum * 1, $event)"/>
+            <a href="javascript:void(0)" class="plus" @click="changeNum(shopCart, 1)">+</a>
           </li>
           <li class="cart-list-con6">
-            <span class="sum">{{ shopCart.skuPrice * shopCart.skuNum}}</span>
+            <span class="sum">{{ shopCart.skuPrice * shopCart.skuNum }}</span>
           </li>
           <li class="cart-list-con7">
-            <a href="#none" class="sindelet">删除</a>
+            <a href="javascript:void(0)" class="sindelet" @click="deleteShop(index)">删除</a>
             <br>
             <a href="#none">移到收藏</a>
           </li>
@@ -54,7 +55,7 @@
         </div>
         <div class="sumprice">
           <em>总价（不含运费） ：</em>
-          <i class="summoney">{{sumPrice}}</i>
+          <i class="summoney">{{ sumPrice }}</i>
         </div>
         <div class="sumbtn">
           <a class="sum-btn" href="###" target="_blank">结算</a>
@@ -69,8 +70,8 @@ import {mapState} from "vuex";
 
 export default {
   name: 'ShopCart',
-  mounted() {
-    this.$store.dispatch('getShopCartList')
+  async mounted() {
+    await this.$store.dispatch('getShopCartList');
   },
   computed: {
     ...mapState({
@@ -84,7 +85,49 @@ export default {
       return sum
     },
     isAllCheck() {
-      return this.shopCartList.every(shop => shop.isChecked === 1)
+      if (!this.shopCartList.length) {
+        return false
+      }
+      return this.shopCartList.every(shop => Boolean(shop.isChecked) === true);
+    },
+  },
+  methods: {
+    checkShop(shopCart) {
+      const {isChecked, skuId} = shopCart;
+      this.$store.dispatch('checkCart', {isChecked: Number(isChecked), skuId}).catch(e => {
+        console.log(e)
+      })
+    },
+    changeNum(shopCart, number, event) {
+      // 校验值
+      if (isNaN(number)) {
+        event.target.value = shopCart.skuNum
+        return
+      }
+      const newSkuNum = shopCart.skuNum + number;
+      if (newSkuNum < 1) {
+        alert('不能为负数')
+        event.target.value = shopCart.skuNum
+        return
+      }
+
+      // 修改输入框的值
+      shopCart.skuNum = newSkuNum;
+
+      // 发送修改请求
+      const skuId = shopCart.skuId
+      const skuNum = number
+      this.$store.dispatch('addOrUpdateShoppingCar', {skuId, skuNum})
+    },
+
+    async deleteShop(index) {
+      const {skuId} = this.shopCartList[index]
+      try {
+        await this.$store.dispatch('deleteShopInCart', skuId);
+        this.shopCartList.splice(index, 1)
+      } catch (e) {
+        alert(e.message)
+      }
     }
   }
 }

@@ -1,4 +1,4 @@
-import {reqGetShopCartList} from '@/api'
+import {reqGetShopCartList, reqDeleteShopInCart, reqCheckCart} from '@/api'
 
 const state = {
     shopCartList: []
@@ -7,9 +7,22 @@ const state = {
 const actions = {
     async getShopCartList({commit}) {
         const res = await reqGetShopCartList();
-        console.log(res)
         if (res.code === 200) {
             commit('SHOP_CART_LIST', res.data[0].cartInfoList)
+        }
+    },
+
+    async deleteShopInCart({commit}, skuId) {
+        const response = await reqDeleteShopInCart(skuId);
+        if (response.code !== 200) {
+            throw Error('删除失败')
+        }
+    },
+
+    async checkCart({commit}, {skuId, isChecked}) {
+        const res = await reqCheckCart(skuId, isChecked);
+        if (res.code !== 200) {
+            throw Error('勾选失败')
         }
     }
 };
