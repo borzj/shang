@@ -57,3 +57,9 @@ export const reqCheckCart = (skuID, isChecked) => requests({
     method: 'get'
 })
 
+// 获取验证码
+export const reqGetCode = phone => requests({
+    url: `/user/passport/sendCode/${phone}`,
+    method: 'get'
+})
+
