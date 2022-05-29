@@ -41,11 +41,11 @@
     </div>
     <div class="cart-tool">
       <div class="select-all">
-        <input class="chooseAll" type="checkbox" :checked="isAllCheck">
+        <input class="chooseAll" type="checkbox" v-model="isAllCheck">
         <span>全选</span>
       </div>
       <div class="option">
-        <a href="#none">删除选中的商品</a>
+        <a href="#" @click.prevent="deleteChecked">删除选中的商品</a>
         <a href="#none">移到我的关注</a>
         <a href="#none">清除下柜商品</a>
       </div>
@@ -84,14 +84,34 @@ export default {
       })
       return sum
     },
-    isAllCheck() {
-      if (!this.shopCartList.length) {
-        return false
+    isAllCheck: {
+      get() {
+        if (!this.shopCartList.length) {
+          return false
+        }
+        return this.shopCartList.every(shop => Boolean(shop.isChecked) === true);
+      },
+      set(isChecked) {
+        const needChangShopSkuIds = this.shopCartList.filter(shop => Boolean(shop.isChecked) !== isChecked)
+            .map(shop => shop.skuId)
+        this.shopCartList.forEach(shop => {
+          shop.isChecked = isChecked
+        })
+        this.$store.dispatch('allCheck', {needChangShopSkuIds, isChecked}).catch(e => {
+          console.error(e)
+        })
       }
-      return this.shopCartList.every(shop => Boolean(shop.isChecked) === true);
     },
   },
   methods: {
+    async deleteChecked() {
+      try {
+        await this.$store.dispatch('deleteChecked');
+        this.shopCartList = this.shopCartList.filter(shop => !shop.isChecked)
+      } catch (e) {
+        alert('删除失败')
+      }
+    },
     checkShop(shopCart) {
       const {isChecked, skuId} = shopCart;
       this.$store.dispatch('checkCart', {isChecked: Number(isChecked), skuId}).catch(e => {

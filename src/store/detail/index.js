@@ -17,6 +17,7 @@ const actions = {
         console.log(skuId, skuNum)
         const res = await reqAddShoppingCar(skuId, skuNum);
         if (res.code !== 200) {
+            console.log(res)
             return Promise.reject(Error('添加购物车失败'))
         }
     }
