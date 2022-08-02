@@ -19,21 +19,21 @@
       </div>
       <div class="content">
         <label>登录密码:</label>
-        <input type="text" placeholder="请输入你的登录密码">
+        <input type="password" placeholder="请输入你的登录密码" v-model="password">
         <span class="error-msg">错误提示信息</span>
       </div>
       <div class="content">
         <label>确认密码:</label>
-        <input type="text" placeholder="请输入确认密码">
+        <input type="password" placeholder="请输入确认密码" v-model="passwordAgain">
         <span class="error-msg">错误提示信息</span>
       </div>
       <div class="controls">
-        <input name="m1" type="checkbox">
+        <input name="m1" type="checkbox" v-model="agree">
         <span>同意协议并注册《尚品汇用户协议》</span>
         <span class="error-msg">错误提示信息</span>
       </div>
       <div class="btn">
-        <button>完成注册</button>
+        <button @click="register">完成注册</button>
       </div>
     </div>
 
@@ -62,12 +62,28 @@
     data(){
       return {
         phone: '',
-        code: ''
+        code: '',
+        password: '',
+        passwordAgain: '',
+        agree: true
       }
     },
     methods: {
+      async register(){
+        const {phone, code, password, passwordAgain, agree} = this;
+        if (!agree || !phone || !code || !password || password !== passwordAgain) {
+          alert('请输入');
+        }
+        try {
+          await this.$store.dispatch('register', {phone, code, password});
+          await this.$router.push('/login');
+        } catch (e){
+          alert(e)
+        }
+      },
       async getCode() {
-        await this.$store.dispatch('getCode')
+        const {phone} = this
+        phone && await this.$store.dispatch('getCode')
         this.code = this.$store.state.user.code
       }
     }

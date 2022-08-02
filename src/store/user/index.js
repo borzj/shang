@@ -1,4 +1,4 @@
-import {reqGetCode} from '@/api'
+import {reqGetCode, reqRegister} from '@/api'
 
 const state = {
     code: ''
@@ -9,6 +9,14 @@ const actions = {
         const res = await reqGetCode(phone);
         if (res.code === 200) {
             commit('CODE', res.data)
+        }
+    },
+
+    async register({commit}, data) {
+
+        const res = await reqRegister(data);
+        if (res.code !== 200) {
+            return Promise.reject(res.message)
         }
     }
 }

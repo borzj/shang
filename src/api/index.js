@@ -63,3 +63,10 @@ export const reqGetCode = phone => requests({
     method: 'get'
 })
 
+// 注册
+export const reqRegister = data => requests({
+    url: '/user/passport/register',
+    method: 'post',
+    data
+})
+
