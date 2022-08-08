@@ -70,3 +70,15 @@ export const reqRegister = data => requests({
     data
 })
 
+// 登录
+export const reqLogin = data => requests({
+    url: '/user/passport/login',
+    method: 'post',
+    data
+})
+
+export const getUserInfo = () => requests({
+    url: '/user/passport/auth/getUserInfo',
+    method: 'get'
+})
+

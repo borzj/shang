@@ -82,8 +82,9 @@
         }
       },
       async getCode() {
+        debugger
         const {phone} = this
-        phone && await this.$store.dispatch('getCode')
+        phone && await this.$store.dispatch('getCode', phone)
         this.code = this.$store.state.user.code
       }
     }

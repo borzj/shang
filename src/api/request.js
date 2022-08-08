@@ -9,6 +9,8 @@ import 'nprogress/nprogress.css'
 
 import {getUUIDToken} from "@/utiles/uuid_token";
 
+import store from '@/store'
+
 // 创建axios实例
 const requests = axios.create({
     // baseURL
@@ -26,6 +28,11 @@ requests.interceptors.request.use(config=> {
     const uuidToken = getUUIDToken()
     if (uuidToken) {
         config.headers.userTempId = uuidToken
+    }
+
+    // 请求头添加用户token
+    if (store.state.user.token) {
+        config.headers.token = store.state.user.token
     }
 
     return config;
