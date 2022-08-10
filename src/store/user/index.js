@@ -1,5 +1,5 @@
-import {reqGetCode, reqRegister, reqLogin, getUserInfo} from '@/api'
-import {setTokenToLocalStorage, getTokenFromLocalStorage} from "@/utiles/token";
+import {reqGetCode, reqRegister, reqLogin, getUserInfo, logout} from '@/api'
+import {setTokenToLocalStorage, getTokenFromLocalStorage, removeTokenFromLocalStorage} from "@/utiles/token";
 
 const state = {
     code: '',
@@ -8,6 +8,15 @@ const state = {
 };
 
 const actions = {
+    async logout({commit}) {
+        const res = await logout();
+        if (res.code === 200) {
+            commit('CLEAR_USER_INFO');
+        } else {
+            return Promise.reject(Error('退出失败'))
+        }
+    },
+
     async getCode({commit}, phone) {
         const res = await reqGetCode(phone);
         if (res.code === 200) {
@@ -42,6 +51,13 @@ const actions = {
 }
 
 const mutations = {
+    // 清空用户数据
+    CLEAR_USER_INFO(state) {
+        state.userInfo = {}
+        state.token = ''
+        removeTokenFromLocalStorage()
+    },
+
     CODE(state, code) {
         state.code = code
     },

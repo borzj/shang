@@ -11,8 +11,8 @@
             <router-link to="/register" class="register">免费注册</router-link>
           </p>
           <p v-else>
-            <a>{{userName}}</a>
-            <a class="register">退出登录</a>
+            <a>{{ userName }}</a>
+            <a class="register" @click="logout">退出登录</a>
           </p>
         </div>
         <div class="typeList">
@@ -61,7 +61,7 @@ export default {
       keyword: ''
     }
   },
-  mounted(){
+  mounted() {
     this.$bus.$on('clearKeyword', () => {
       this.keyword = ''
     })
@@ -72,6 +72,15 @@ export default {
     },
   },
   methods: {
+    logout() {
+      try {
+        this.$store.dispatch('logout')
+        this.$router.push('/home')
+      } catch (e) {
+        alert('登录失败')
+      }
+    },
+
     goSearch() {
       const {keyword} = this
       // 编程式路由
@@ -82,7 +91,7 @@ export default {
           keyword
         }
       }
-      if(this.$route.query){
+      if (this.$route.query) {
         location.query = this.$route.query
       }
       this.$router.push(location)
