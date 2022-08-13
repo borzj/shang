@@ -72,10 +72,10 @@ export default {
     },
   },
   methods: {
-    logout() {
+    async logout() {
       try {
-        this.$store.dispatch('logout')
-        this.$router.push('/home')
+        await this.$store.dispatch('logout')
+        await this.$router.push('/home')
       } catch (e) {
         alert('登录失败')
       }

@@ -46,7 +46,10 @@ const actions = {
         const res = await getUserInfo()
         if (res.code === 200) {
             commit('SAVE_USER_INFO', res.data);
+        }else {
+            return Promise.reject(Error(res.message))
         }
+
     }
 }
 
@@ -65,7 +68,6 @@ const mutations = {
         state.token = token
     },
     SAVE_USER_INFO(state, userInfo) {
-        console.log(userInfo)
         state.userInfo = userInfo
     }
 }

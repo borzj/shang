@@ -34,7 +34,6 @@ router.beforeEach(async (to, from, next) => {
     // to: 获取将要跳转到的路由的信息
     // from: 从哪个路由来
     // next: 放行函数
-    console.log(store)
     const {token, userInfo} = store.state.user
     // 已经登录
     if (token) {

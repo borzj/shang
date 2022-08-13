@@ -5,6 +5,20 @@
 import requests from "@/api/request";
 import mockRequests from '@/api/requestMock'
 
+export function reqTradeInfo() {
+    return requests({
+        url: '/order/auth/trade',
+        method: 'get'
+    })
+}
+
+export function reqUserAddress(){
+    return requests({
+        url: '/user/userAddress/auth/findUserAddressList',
+        method: 'get'
+    })
+}
+
 export const reqCategoryList = () => requests({
     url: '/product/getBaseCategoryList',
     method: 'get'
