@@ -82,7 +82,7 @@
       </div>
     </div>
     <div class="sub clearFix">
-      <router-link class="subBtn" to="/pay">提交订单</router-link>
+      <a class="subBtn" @click="submitOrder">提交订单</a>
     </div>
   </div>
 </template>
@@ -95,7 +95,8 @@ export default {
   data() {
     return {
       defaultAddress: {},
-      msg: ''
+      msg: '',
+      orderId: 0
     }
   },
   mounted() {
@@ -110,13 +111,31 @@ export default {
   },
   watch: {
     addresses() {
-      this.defaultAddress = this.addresses.find(address => address.isDefault === '1')
+      this.defaultAddress = this.addresses.find(address => address.isDefault === '1') || {}
     }
   },
   methods: {
     updateSelect(index) {
       this.defaultAddress = this.addresses[index]
     },
+    async submitOrder(){
+      const {tradeNo, detailArrayList} = this.tradeInfo
+      const {consignee, phoneNum, fullAddress} = this.defaultAddress
+      const data = {
+        consignee: consignee || 'consignee',
+        consigneeTel: phoneNum || 'consigneeTel',
+        deliveryAddress: fullAddress || 'deliveryAddress',
+        paymentWay: "ONLINE",
+        orderComment: this.msg,
+        detailArrayList
+      }
+      const res = await this.$API.reqSubmitOrder(tradeNo, data)
+      if (res.code === 200) {
+        this.$router.push(`/pay?orderId=${res.data}`);
+      } else {
+        this.$router.push(`/pay?orderId=000`);
+      }
+    }
   }
 }
 </script>

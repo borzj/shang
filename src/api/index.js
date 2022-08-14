@@ -5,6 +5,21 @@
 import requests from "@/api/request";
 import mockRequests from '@/api/requestMock'
 
+export function reqPayInfo(orderId) {
+    return requests({
+        url: `/payment/weixin/createNative/${orderId}`,
+        method: 'get'
+    })
+}
+
+export function reqSubmitOrder(tradeNo, data) {
+    return requests({
+        url: `/order/auth/submitOrder?tradeNo=${tradeNo}`,
+        method: 'post',
+        data
+    })
+}
+
 export function reqTradeInfo() {
     return requests({
         url: '/order/auth/trade',
