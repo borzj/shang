@@ -8,8 +8,30 @@ import ShopCart from "@/pages/ShopCart";
 import Trade from "@/pages/Trade";
 import Pay from "@/pages/Pay";
 import PaySuccess from "@/pages/PaySuccess";
+import Center from "@/pages/Center";
+import MyOrder from "@/pages/Center/MyOrder";
+import GroupOrder from "@/pages/Center/GroupOrder";
 
 export default [
+    {
+        name: 'center',
+        path: '/center',
+        component: Center,
+        meta: {
+            show: true
+        },
+        children: [
+            {
+                path: 'my-order',
+                component: MyOrder
+            },
+            {
+                path: 'group-order',
+                component: GroupOrder
+            }
+        ],
+        redirect: '/center/my-order'
+    },
     {
         name: 'pay-success',
         path: '/pay-success',

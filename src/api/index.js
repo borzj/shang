@@ -5,6 +5,14 @@
 import requests from "@/api/request";
 import mockRequests from '@/api/requestMock'
 
+export function reqOrderList(page, limit) {
+    return requests({
+        url: `/order/auth/${page}/${limit}`,
+        method: 'get'
+    })
+
+}
+
 export function reqPayInfo(orderId) {
     return requests({
         url: `/payment/weixin/createNative/${orderId}`,
