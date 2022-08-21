@@ -84,7 +84,8 @@
         }
         try {
           await this.$store.dispatch('login', {phone, password});
-          await this.$router.push('/home')
+          const location = this.$route.query.redirect || '/home'
+          await this.$router.push(location)
         } catch (e){
           alert('登录失败')
         }

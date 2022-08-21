@@ -53,6 +53,12 @@ router.beforeEach(async (to, from, next) => {
     }
 
     // 未登录
+    const toPath = to.path;
+    const interceptPaths = ['/center', '/pay', '/trade']
+    const inInterceptPaths = ~interceptPaths.findIndex(interceptPath => new RegExp(`^${interceptPath}`).test(toPath))
+    if (inInterceptPaths) {
+        return next(`/login?redirect=${toPath}`)
+    }
     next();
 })
 

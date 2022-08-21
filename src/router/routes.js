@@ -8,7 +8,6 @@ import ShopCart from "@/pages/ShopCart";
 import Trade from "@/pages/Trade";
 import Pay from "@/pages/Pay";
 import PaySuccess from "@/pages/PaySuccess";
-import Center from "@/pages/Center";
 import MyOrder from "@/pages/Center/MyOrder";
 import GroupOrder from "@/pages/Center/GroupOrder";
 
@@ -16,7 +15,7 @@ export default [
     {
         name: 'center',
         path: '/center',
-        component: Center,
+        component: () => import("@/pages/Center"), // 路由懒加载, 在使用组件时加载js
         meta: {
             show: true
         },
@@ -46,6 +45,12 @@ export default [
         component: Pay,
         meta: {
             show: true
+        },
+        beforeEnter: (to, from, next) => {
+            if (from.path !== '/trade') {
+                return next(false)
+            }
+            next()
         }
     },
     {
@@ -54,6 +59,12 @@ export default [
         component: Trade,
         meta: {
             show: true
+        },
+        beforeEnter: (to, from, next) => {
+            if (from.path !== '/shop-car') {
+                return next(false)
+            }
+            next()
         }
     },
     {

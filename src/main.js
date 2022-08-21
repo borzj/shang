@@ -5,6 +5,7 @@ import router from '@/router'
 
 import {Button, MessageBox} from 'element-ui'
 
+import VeeValidate from "vee-validate";
 import TypeNav from "@/components/TypeNav";
 import Carsousle from "@/components/Carsousle";
 import Pagination from "@/components/Pagination"
@@ -24,6 +25,8 @@ Vue.component(TypeNav.name, TypeNav)
 Vue.component(Carsousle.name, Carsousle)
 Vue.component(Pagination.name, Pagination)
 Vue.component(Button.name, Button);
+
+Vue.use(VeeValidate)
 
 new Vue({
   render: h => h(App),
